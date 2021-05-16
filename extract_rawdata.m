@@ -4,7 +4,7 @@ tic
 filepathname={'silence','testDLP'};
 
 %for Rongkang desktop-3070  & Laptap
-workpath=fullfile('G:','Data','WenLab','Worm_Embed');
+workpath=fullfile('G:','Data','WenLab','Worm_Embedding');
 %For the 2080Ti
 % workpath=fullfile('/','home','wenLab','xrk','Worm_Embed');
 
