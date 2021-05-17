@@ -1,5 +1,5 @@
 function v=wormSpeed(position)
-%position是numfram*3数据，三列分别是时间，X，Y坐标 （mm）
+%position是numfram*3数据，三列分别是时间，X，Y坐标 （um）
 vnum=length(position)-1;
 v=zeros(vnum,3);
 for i=1:vnum

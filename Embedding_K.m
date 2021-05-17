@@ -1,10 +1,11 @@
+function y=Embedding_K(angle)
 ts=16; %sampling rate
-rtheta_s = angle_data(:,2:end); %去掉第一列 得100列维度
+rtheta_s = angle(:,2:end); %去掉第一列 得100列维度
 mean_X = mean(rtheta_s, 1); %整列做平均
 T_sample = size(rtheta_s, 1);
 X_shifted = rtheta_s - repmat(mean_X, T_sample, 1); %将rtheta_s减去均值，中心化
 
-K_mode = 5; %
+K_mode = 5; % 取
 r = 4; %ratio of folding
 T = ceil(T_sample / r); %downsampled data points
 L = size(rtheta_s, 2); %number of segments 
@@ -96,3 +97,6 @@ ylabel('T_{pred}')
 hold off
 
 saveas(gcf, fullfile(savefolder,'Tpred(m).jpg'));
+
+
+end

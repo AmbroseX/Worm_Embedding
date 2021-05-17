@@ -108,9 +108,6 @@ for filepath_num=1:length(filepathname)
             boundary=reshape(mcd(i).BoundaryA,2,[]);
             wormdata.BoundaryA(i,:,1)=boundary(1,:);
             wormdata.BoundaryA(i,:,2)=boundary(2,:);
-            boundary=reshape(mcd(i).BoundaryB,2,[]);
-            wormdata.BoundaryB(i,:,1)=boundary(1,:);
-            wormdata.BoundaryB(i,:,2)=boundary(2,:);
             
             wormdata.Centerline(i,:,1)=centerline(1,:);
             wormdata.Centerline(i,:,2)=centerline(2,:);

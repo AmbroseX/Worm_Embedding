@@ -1,8 +1,8 @@
 function relativePosion=wormrelativePosition(A)
 %算质心速度speed随时间变化的数据
 %A is wormdata
-micronperunit = 0.05;  %每个单位位移代表的长度 mm
-micronperpxl = 2.43;  %每个像素代表的长度 mm
+micronperunit = 0.05;  %每个单位位移代表的长度 um
+micronperpxl = 2.43;  %每个像素代表的长度 um
 time=A.TimeElapsed;
 StagePosition=A.StagePosition;
 centerPosition=centeroidPosion(A);   %质心相对相机的时间-位移 X1
