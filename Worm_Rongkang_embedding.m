@@ -138,6 +138,8 @@ mStar = 6;  % to set best embedding dimension
 %center ybar by removing mean
 ybar = bsxfun(@minus, ybar, mean(ybar));
 Y = ybar;
+
+
 %% Get Delay matrix by Wen
 Kymoratio_Jiahao = 100;
 K_delay = 12;

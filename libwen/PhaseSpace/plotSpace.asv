@@ -1,0 +1,6 @@
+function y=plotSpace(trajectory,speed)
+    for i=1:sumN2
+    project_N2{i}=angle_dataN2{i}*mean_PCA_matrix;
+end
+
+end

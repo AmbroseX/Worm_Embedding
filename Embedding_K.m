@@ -1,11 +1,11 @@
-function y=Embedding_K(angle)
+angle=angle_data;
 ts=16; %sampling rate
 rtheta_s = angle(:,2:end); %去掉第一列 得100列维度
 mean_X = mean(rtheta_s, 1); %整列做平均
 T_sample = size(rtheta_s, 1);
 X_shifted = rtheta_s - repmat(mean_X, T_sample, 1); %将rtheta_s减去均值，中心化
 
-K_mode = 5; % 取
+K_mode = 6; % 取
 r = 4; %ratio of folding
 T = ceil(T_sample / r); %downsampled data points
 L = size(rtheta_s, 2); %number of segments 
@@ -16,12 +16,14 @@ for i = 1:L
 end
 
 %% Our data: get eigenworms by PCA
-[eigenvectors, eigenvalues] = eig(X_downsampled' * X_downsampled);
+[eigenvectors,eigenvalues] = eig(X_downsampled' * X_downsampled);
 eigenvectors = fliplr(eigenvectors); %如果 A 是一个行向量，则 fliplr(A) 返回一个相同长度的向量，
 %其元素的顺序颠倒。如果 A 是一个列向量，则 fliplr(A) 只返回 A，对于多维数组，fliplr
 %作用于由第一个和第二个维度构成的平面。特征值由大到小的排列的向量
 c = (X_downsampled * eigenvectors);  %投影到eigenvectors张成的空间
 y = c(:, 1:K_mode); %the coefficients of the first K_modes
+
+save(fullfile(savefolder,strcat(filepath,'_',wormName,'_','angle_PCA_Kmode.mat')),'y'); % %存储矩阵
 
 %% optimize K
 %params
@@ -59,7 +61,7 @@ end
 
 
 %plot Tpred(k)
-figure
+figure('Name','Tpred(k)','NumberTitle','off');
 hold on
 errorbar(delrange, tpred_k(:, 1), tpred_k(:, 1) - tpred_k(:, 2), tpred_k(:, 3) - tpred_k(:, 1), 'ko', 'markersize', 8);
 %errorbar(x,average,'Var_nagetive','Var_positive');
@@ -67,36 +69,4 @@ errorbar(delrange, tpred_k(:, 1), tpred_k(:, 1) - tpred_k(:, 2), tpred_k(:, 3) -
 xlabel('K')
 ylabel('T_{pred}')
 hold off
-saveas(gcf, fullfile(savefolder,'Tpred(K).jpg'))
-
-[pks,locs] = findpeaks(tpred_k(:,1));
-Kstar=locs(end);  % K越大越好
-Kstar=41;
-disp(['Best K is:',num2str(Kstar)]);
-
-%% Use SVD to optimize m
-%set the value of Kstar as determined from Tpred(K) above
-%Maximum embedding dimension corresponds to the maximum number of singular
-%vectors to consider.
-[ybar, ybar_orig, ybar_orig_idx] = embed_cells(y, Kstar);
-[~, tstidx] = ismember(testinds, ybar_orig_idx);
-%perform SVD，奇异值分解寻找最佳的m
-[U, S, V] = svd(ybar, 'econ');
-
-mmax = 14; %m最大到多少为止
-for mi = 1:mmax
-    [rmsp_m{mi}, es_m(mi, :), ar_m(mi, :), tpred_m(mi, :), ts_m(mi, :)] = predict_nn(U(:, 1:mi), ybar_orig, Tmax, npred, V(:, 1:mi) * S(1:mi, 1:mi), nb, tstidx);
-    disp(mi);
-end
-% plot Tpred(m)
-figure
-hold on
-errorbar(1:mmax, tpred_m(:, 1), tpred_m(:, 1) - tpred_m(:, 2), tpred_m(:, 3) - tpred_m(:, 1), 'ko', 'markersize', 8);
-xlabel('m')
-ylabel('T_{pred}')
-hold off
-
-saveas(gcf, fullfile(savefolder,'Tpred(m).jpg'));
-
-
-end
+save(fullfile(savefolder,strcat(filepath,'_',wormName,'_','angle_PCA_Tpredk.mat')),'tpred_k'); % %存储矩阵

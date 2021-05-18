@@ -1,18 +1,22 @@
+close all
 tic
 %% -------------load data-------------------------------
 clear,clc
 % N2 silence testDLP
-filepath='N2';
+
 
 %for Rongkang desktop-3070  & Laptap
 workpath=fullfile('G:','Data','WenLab','Worm_Embedding');
 [wormfile,pathname]=uigetfile('.mat','选择要计算的文件',fullfile('workpath','data'));
 
+filepath=strsplit(pathname,'\');
+filepath=filepath{6};
+
 %For the 2080Ti
 % workpath=fullfile('/','home','wenlab','xrk','Worm_Embed');
 
 addpath(genpath(fullfile(workpath,'libwen')));
-addpath(genpath(fullfile(workpath,'data',filepath)));
+addpath(genpath(pathname));
 
 disp('Staring load data...')
 
@@ -37,3 +41,8 @@ disp('loadding success ...')
 %% -------------------load success---------------------------------
 
 %% get the best K and m
+
+%posture_PCA
+%Embedding_K;
+% saveas(gcf, fullfile(savefolder,strcat(filepath,'_',wormName,'_','Tpred(K).jpg')))
+angle_PCA;

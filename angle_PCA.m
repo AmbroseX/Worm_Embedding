@@ -1,15 +1,17 @@
-% To get the posture EigenWorm
-numfram=length(wormdata.BoundaryA);
-X=zeros(numfram,400); %存储 BoundaryA X, BoundaryB X,BoundaryA Y,BoundaryB Y
-for i=1:numfram
-    X(i,:)=[wormdata.BoundaryA(i,:,1),flip(wormdata.BoundaryB(i,:,1)) wormdata.BoundaryA(i,:,2),flip(wormdata.BoundaryB(i,:,2))]; %M*400
-end
+% To get the angle EigenWorm
+angle=angle_data;
+rtheta_s = angle(:,2:end); %去掉第一列 得100列维度
+numfram=length(rtheta_s);
+
+X=rtheta_s; %存储 M*100
+
+
 [m,n]=size(X);
-eignum=400;
+eignum=100;
 
 %中心化
 mm=mean(X,1);   %对每一列进行平均
-Xmean=repmat(mm,m,1); %M*400
+Xmean=repmat(mm,m,1); %M*100
 X=X-Xmean;
 
 
@@ -27,18 +29,18 @@ title(strcat(filepath,'-',wormName,'-','worm'))
 xlabel('Eigennum')
 ylabel('Sum of EigenValue')
 hold off
-saveas(gcf, fullfile(savefolder,strcat(wormName,'_','posture','_','EigenValuePCA.jpg')));
+saveas(gcf, fullfile(savefolder,strcat(filepath,'_',wormName,'_','angle','_','EigenValuePCA.jpg')));
 
-save(fullfile(savefolder,strcat(wormName,'_','posture_PCA.mat')),'V'); % %存储矩阵
+save(fullfile(savefolder,strcat(filepath,'_',wormName,'_','angle_PCA.mat')),'V'); % %存储矩阵
 
 % %显示特征worm
 figure('Name',strcat(filepath,'_',wormName,'_','EigenWorm'),'NumberTitle','off');
 for i=1:6
     si=num2str(i);
-    x=V(1:200,i);
-    y=V(201:end,i);
+    x=linspace(0,1,100);   %0-之间的100个点
+    y=V(:,i);
     subplot(2,3,i)
     plot(x,y)
     title(['EigenWormPCA' si]);
 end
-saveas(gcf, fullfile(savefolder,strcat(wormName,'_','posture','_','EigenWormPCA.jpg')));
+saveas(gcf, fullfile(savefolder,strcat(filepath,'_',wormName,'_','angle','_','EigenWormPCA.jpg')));
