@@ -80,6 +80,12 @@ for filepath_num=1:length(filepathname)
         wormdata.StageFeedbackTarget=zeros(framnum,2);
         wormdata.BoundaryA=zeros(framnum,100,2);   %A面的坐标
         wormdata.BoundaryB=zeros(framnum,100,2);   %B面的坐标
+        wormdata.Framenum=zeros(framnum,1);  %存储视频的framnumber
+        wormdata.Head=zeros(framnum,2);
+        wormdata.Tail=zeros(framnum,2);
+        wormdata.StageVelocity=zeros(framnum,2);
+        
+        
         Head_position=mcd(1).Head;
         Tail_position=mcd(1).Tail;
         worm_length=0;  %body length in terms of pixels
@@ -117,6 +123,10 @@ for filepath_num=1:length(filepathname)
             wormdata.TimeElapsed(i)=mcd(i).TimeElapsed;
             wormdata.StagePosition(i,:)=mcd(i).StagePosition;
             wormdata.StageFeedbackTarget(i,:)=mcd(i).StageFeedbackTarget;
+            wormdata.Framenum(i)=mcd(i).FrameNumber;
+            wormdata.Head(i,:)=mcd(i).Head(:);
+            wormdata.Tail(i,:)=mcd(i).Tail(:);
+            wormdata.StageVelocity(i,:)=mcd(i).StageVelocity(:);
             
             df = diff(centerline,1,2); %列差分计算，相邻点做差分
             t = cumsum([0, sqrt([1 1]*(df.*df))]);%求矩阵或向量的累积和，here [0,[1:100]] adds one column by the head, thus the matrix becomes [0:101]
@@ -152,7 +162,8 @@ for filepath_num=1:length(filepathname)
         
         %calculate the relative speed
         position=wormrelativePosition(wormdata);
-        wormdata.speed=wormSpeed(position); % 三列time,Vx,Vy  mm/s
+        wormdata.FBposition=ForwardBackwardFrames(wormdata.Centerline,wormdata.TimeElapsed,2);
+        [~,wormdata.speed]=relativePositionandSpeed(wormdata.Centerline,wormdata.StagePosition,wormdata.TimeElapsed); % x,Vy  um/s
         
         save(fullfile(savefolder,savename),'wormdata')
         disp(['Save file',savename, 'success'])

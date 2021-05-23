@@ -1,4 +1,5 @@
 %for Rongkang desktop-3070  & Laptap
+close all
 workpath=fullfile('G:','Data','WenLab','Worm_Embedding');
 addpath(genpath(fullfile(workpath,'libwen')));
 savefolder=fullfile('G:','Data','WenLab','Worm_Embedding','prodata','PhaseSpace');
@@ -28,6 +29,7 @@ clear PCA_matrix
 wormName='N2';
 % %显示N2 的平均 worm
 figure('Name','N2:平均EigenWorm','NumberTitle','off');
+hold on
 for i=1:6
     si=num2str(i);
     x=linspace(0,1,100);   %0-之间的100个点
@@ -36,6 +38,7 @@ for i=1:6
     plot(x,y)
     title(['EigenWormPCA ' si]);
 end
+hold off
 saveas(gcf, fullfile(savefolder,strcat('N2','_','mean_angle','_','EigenWormPCA.jpg')));
 
 
@@ -47,7 +50,7 @@ for i=1:sumN2
 end
 
 for i=1:sumN2
-    angle_dataN2{i}=dataN2{i}.wormdata.angle_data(:,2:end); %去掉第一列 得100列维度
+    angle_dataN2{i}=dataN2{i}.wormdata.angle_data(:,2:end); % 得100列维度
     time_elapsedN2{i}=dataN2{i}.wormdata.TimeElapsed;
     speed_dataN2{i}=dataN2{i}.wormdata.speed;  %time,Vx,Vy
 end
@@ -60,12 +63,25 @@ for i=1:sumSilence
     silence_PCA_data{i}=load(fullfile(workfolder,filename(i).name));
 end
 for i=1:sumSilence
-    angle_dataSilence{i}=silence_PCA_data{i}.wormdata.angle_data(:,2:end); %去掉第一列 得100列维度
+    angle_dataSilence{i}=silence_PCA_data{i}.wormdata.angle_data(:,2:end); % 得100列维度
     time_elapsedSilence{i}=silence_PCA_data{i}.wormdata.TimeElapsed;
     speed_dataSilence{i}=silence_PCA_data{i}.wormdata.speed;  %time,Vx,Vy
 end
 
 
+%
+for i=1:sumN2
+    plotSpace(angle_dataN2{i},mean_PCA_matrix,speed_dataN2{i},'N2',worm{i},savefolder,'angle_PCA')
+end
+worm={'w0','w1','w2','w3','w4'};
+for i=1:sumSilence
+   plotSpace(angle_dataN2{i},mean_PCA_matrix,speed_dataN2{i},'Silence',worm{i},savefolder,'angle_PCA') 
+end
+
+
+% plotSpace(angle_dataN2{1},mean_PCA_matrix,speed_dataN2{1},'N2','w1',savefolder,'angle_PCA')
+% 
+% plotSpace(angle_dataSilence{1},mean_PCA_matrix,speed_dataSilence{1},'silence','w1',savefolder,'angle_PCA')
 
 
 

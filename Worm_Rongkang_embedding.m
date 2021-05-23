@@ -58,6 +58,8 @@ eigenvectors = fliplr(eigenvectors); %如果 A 是一个行向量，则 fliplr(A
 c = (X_downsampled * eigenvectors);  %投影到eigenvectors张成的空间
 y = c(:, 1:K_mode); %the coefficients of the first K_modes
 
+
+
 %% optimize K
 %params
 %Kmax, maximum K used in the search. As a first guess, autocorrelation
@@ -191,6 +193,8 @@ deMix = B' * whiteningMatrix;  %白化矩阵
 mix = dewhiteningMatrix * B;
 Zica = deMix * Y' + (deMix * mu') * ones(1, size(Y, 1));
 [Kymo_curvdata_Jiahao, Kymo_theta_Jiahao] = Get_Kymograph(mix, Kymoratio_Jiahao, eigenvectors, K_delay, K_mode, embedded_dimension);
+
+
 
 %icasig = W * mixedsig + (W * mu) * ones(1, NumOfSampl);
 %check the transfromation is legit: res should be zero

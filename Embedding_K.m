@@ -1,6 +1,7 @@
-angle=angle_data;
-ts=16; %sampling rate
-rtheta_s = angle(:,2:end); %去掉第一列 得100列维度
+% angle=angle_data;
+% ts=16; %sampling rate
+% rtheta_s = angle(:,2:end); %去掉第一列 得100列维度
+rtheta_s = curve_data;
 mean_X = mean(rtheta_s, 1); %整列做平均
 T_sample = size(rtheta_s, 1);
 X_shifted = rtheta_s - repmat(mean_X, T_sample, 1); %将rtheta_s减去均值，中心化
@@ -30,7 +31,7 @@ save(fullfile(savefolder,strcat(filepath,'_',wormName,'_','angle_PCA_Kmode.mat')
 %Kmax, maximum K used in the search. As a first guess, autocorrelation
 %time, zero of autocorrelation function,oscillation period or its double.
 %Delrange can be used to sample K coarsely, recommended when starting.
-maxdel = 80; delrange = 1:1:maxdel;
+maxdel = 30; delrange = 1:1:maxdel;
 %number of random points used for prediction. Larger number of points give
 %a better estimate, but takes longer.
 npred = 7000; %7000
@@ -59,6 +60,7 @@ for deli = 1:length(delrange)
     disp(delrange(deli));
 end
 
+save(fullfile(savefolder,strcat(filepath,'_',wormName,'_','angle_PCA_Tpredk.mat')),'tpred_k'); % %存储矩阵
 
 %plot Tpred(k)
 figure('Name','Tpred(k)','NumberTitle','off');
@@ -69,4 +71,4 @@ errorbar(delrange, tpred_k(:, 1), tpred_k(:, 1) - tpred_k(:, 2), tpred_k(:, 3) -
 xlabel('K')
 ylabel('T_{pred}')
 hold off
-save(fullfile(savefolder,strcat(filepath,'_',wormName,'_','angle_PCA_Tpredk.mat')),'tpred_k'); % %存储矩阵
+
