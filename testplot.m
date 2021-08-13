@@ -47,11 +47,11 @@ set(p.Edge, 'ColorBinding','interpolated', 'ColorData',cd)
 
 
 %% 以下是一种可能的方法：使用从所需颜色图中获取的不同颜色明确绘制线的每个线段。
-x = 1:10; % x data. Assumed to be increasing 
+x = -10:10; % x data. Assumed to be increasing 
 num = length(x); % number of colors. Assumed to be greater than size of x 
 y = x.^2; % y data
 z=x;
-c = x;  % speed;
+c = exp(x)-1;  % speed;
 %c(end)=[];
 % cc储存，第一列数值，第二列其原本序号，第3列颜色序号
 cc =zeros(num,3);
@@ -84,7 +84,7 @@ fig1=plot2d_color(x,y,c);
 xlabel('x')
 hold off
 
-x=0:20;
+x=-10:10;
 y=0:20;
 num=length(x);
 cmap=jet(30);
@@ -118,8 +118,12 @@ end
 
 figure
 hold on
-x=1:10;
-y=1:10;
-v=9:-1:1;
+x=-20:5;
+y=x.*x;
+v=x;
+v(end)=[];
 plot2d_color(x,y,v)
 hold off
+
+
+

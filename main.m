@@ -36,7 +36,7 @@ else
 end
 % Our data: preparation
 angle_data=wormdata.angle_data;
-curve_data=wormdata.curv_data;
+curve_data=wormdata.curve_data;
 time=wormdata.TimeElapsed;
 Frame=wormdata.Framenum;
 [centerline,speed]=relativePositionandSpeed(wormdata.Centerline,wormdata.StagePosition,time);  %算出来绝对速度

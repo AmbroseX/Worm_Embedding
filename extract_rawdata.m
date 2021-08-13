@@ -161,7 +161,7 @@ for filepath_num=1:length(filepathname)
         end
         
         %calculate the relative speed
-        position=wormrelativePosition(wormdata);
+        %position=wormrelativePosition(wormdata);
         wormdata.FBposition=ForwardBackwardFrames(wormdata.Centerline,wormdata.TimeElapsed,2);
         [~,wormdata.speed]=relativePositionandSpeed(wormdata.Centerline,wormdata.StagePosition,wormdata.TimeElapsed); % x,Vy  um/s
         
